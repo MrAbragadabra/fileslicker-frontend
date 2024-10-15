@@ -27,7 +27,7 @@ export default function RootLayout({
 	return (
 		<html lang='ru'>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-x-hidden`}
+				className={`${geistSans.variable} ${geistMono.variable} flex items-center justify-center antialiased min-h-screen overflow-x-hidden`}
 			>
 				<ThemeProvider
 					attribute='class'
