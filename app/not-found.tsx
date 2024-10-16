@@ -24,8 +24,9 @@ export default function NotFound() {
 					</svg>
 					<span className='font-bold text-4xl sm:text-6xl'>fileslicker</span>
 				</Link>
-				<div className='mt-4'><span className='text-2xl'>Кажется, вы потерялись - 404</span></div>
-				
+				<div className='mt-4'>
+					<span className='text-2xl'>Кажется, вы потерялись - 404</span>
+				</div>
 			</div>
 		</section>
 	)
