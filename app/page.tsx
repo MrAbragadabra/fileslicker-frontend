@@ -1,10 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { useToast } from '@/hooks/use-toast'
-
 export default function Home() {
-	const { toast } = useToast()
 	return (
 		<section>
 			<p>
@@ -20,18 +16,6 @@ export default function Home() {
 				corporis fugit alias expedita. Mollitia consequatur illo tempora maiores
 				dolore nostrum laborum porro. Culpa dolores nobis soluta!
 			</p>
-			<Button
-				className='mt-4'
-				variant='outline'
-				onClick={() => {
-					toast({
-						title: 'Покупка пива 🍺🤙',
-						description: 'С вас сняли 450 рублей',
-					})
-				}}
-			>
-				Кнопка (она прикольная)
-			</Button>
 		</section>
 	)
 }
