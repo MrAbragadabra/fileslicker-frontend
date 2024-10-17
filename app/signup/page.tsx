@@ -106,7 +106,7 @@ export default function Signup() {
 						</FormItem>
 					)}
 				/>
-				<Button type='submit'>Submit</Button>
+				<Button variant={'outline'} type='submit'>Зарегистрироваться</Button>
 			</form>
 		</Form>
 	)
