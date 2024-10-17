@@ -73,19 +73,45 @@ export const Header: React.FC<Props> = ({ className }) => {
 									</SheetTrigger>
 									<SheetContent side={'left'}>
 										<SheetHeader>
-											<SheetTitle>По пивку? 🍺</SheetTitle>
+											<SheetTitle>
+												<Link className='flex items-center' href={'/'}>
+													<svg
+														className='h-6 w-6 mr-2 block'
+														viewBox='0 0 139 139'
+														fill='none'
+														xmlns='http://www.w3.org/2000/svg'
+													>
+														<circle
+															className='dark:stroke-white stroke-black'
+															cx='68'
+															cy='68'
+															r='60'
+															stroke='white'
+															stroke-width='11'
+														/>
+													</svg>
+													<span className='font-bold text-xl block'>fileslicker</span>
+												</Link>
+											</SheetTitle>
 											<SheetDescription>
-												Пиво — слабоалкогольный напиток, получаемый спиртовым
-												брожением солодового сусла (чаще всего на основе ячменя)
-												с помощью пивных дрожжей, обычно с добавлением хмеля.
-												Содержание этилового спирта (крепость) в большинстве
-												сортов пива около 3,0—6,0% об. (крепкое содержит, как
-												правило, от 8,5% до 14% об., иногда также выделяют
-												лёгкое пиво, которое содержит 1—2% об., отдельно
-												выделяют безалкогольное пиво, которое сюда не включают),
-												сухих веществ (в основном углеводов) 7—10%, углекислого
-												газа 0,48—1,0%. В пиве содержится более 800 соединений,
-												которые определяют его вкус и аромат.
+												<div className='flex flex-col gap-4 mt-6'>
+													<div>
+														<Link
+															className='transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
+															href={'/signup'}
+														>
+															Регистрация
+														</Link>
+													</div>
+													<div>
+														<Link
+															className='transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
+															href={'/login'}
+														>
+															Вход
+														</Link>
+													</div>
+												</div>
 											</SheetDescription>
 										</SheetHeader>
 									</SheetContent>
