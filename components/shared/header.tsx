@@ -43,7 +43,7 @@ export const Header: React.FC<Props> = ({ className }) => {
 									stroke-width='11'
 								/>
 							</svg>
-							<span className='font-bold'>fileslicker</span>
+							<span className='font-bold text-xl'>fileslicker</span>
 						</Link>
 					</div>
 
