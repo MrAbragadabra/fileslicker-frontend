@@ -19,7 +19,7 @@ export default function NotFound() {
 							cy='68'
 							r='60'
 							stroke='white'
-							stroke-width='11'
+							strokeWidth='11'
 						/>
 					</svg>
 					<span className='font-bold text-4xl sm:text-6xl'>fileslicker</span>

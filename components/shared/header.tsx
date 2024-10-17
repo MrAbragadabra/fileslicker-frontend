@@ -40,7 +40,7 @@ export const Header: React.FC<Props> = ({ className }) => {
 									cy='68'
 									r='60'
 									stroke='white'
-									stroke-width='11'
+									strokeWidth='11'
 								/>
 							</svg>
 							<span className='font-bold text-xl'>fileslicker</span>
@@ -87,7 +87,7 @@ export const Header: React.FC<Props> = ({ className }) => {
 															cy='68'
 															r='60'
 															stroke='white'
-															stroke-width='11'
+															strokeWidth='11'
 														/>
 													</svg>
 													<span className='font-bold text-xl block'>fileslicker</span>

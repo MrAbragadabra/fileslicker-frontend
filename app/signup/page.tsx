@@ -58,7 +58,10 @@ export default function Signup() {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 w-full lg:max-w-[30%]'>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className='space-y-4 w-full lg:max-w-[30%]'
+			>
 				<FormField
 					control={form.control}
 					name='email'
@@ -106,7 +109,9 @@ export default function Signup() {
 						</FormItem>
 					)}
 				/>
-				<Button variant={'outline'} type='submit'>Зарегистрироваться</Button>
+				<Button variant={'outline'} type='submit'>
+					Зарегистрироваться
+				</Button>
 			</form>
 		</Form>
 	)
