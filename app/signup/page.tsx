@@ -57,62 +57,63 @@ export default function Signup() {
 	}
 
 	return (
-		<Form {...form}>
-			<form
-				onSubmit={form.handleSubmit(onSubmit)}
-				className='space-y-4 w-full lg:max-w-[30%]'
-			>
-				<FormField
-					control={form.control}
-					name='email'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Почта</FormLabel>
-							<FormControl>
-								<Input placeholder='ваша электронная почта' {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='password'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Пароль</FormLabel>
-							<FormControl>
-								<Input
-									type='password'
-									placeholder='ваш пароль от 8 символов'
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='password_repeat'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Повтор пароля</FormLabel>
-							<FormControl>
-								<Input
-									type='password'
-									placeholder='должен совпадать с предыдущим полем'
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button variant={'outline'} type='submit'>
-					Зарегистрироваться
-				</Button>
-			</form>
-		</Form>
+		<>
+		<h1 className='text-bold text-2xl mb-6'>Создание аккаунта</h1>
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className='space-y-4 w-full lg:max-w-[30%]'
+				>
+					<FormField
+						control={form.control}
+						name='email'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Почта</FormLabel>
+								<FormControl>
+									<Input {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='password'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Пароль</FormLabel>
+								<FormControl>
+									<Input
+										type='password'
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='password_repeat'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Повтор пароля</FormLabel>
+								<FormControl>
+									<Input
+										type='password'
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<Button variant={'default'} type='submit'>
+						Создать аккаунт
+					</Button>
+				</form>
+			</Form>
+		</>
 	)
 }
