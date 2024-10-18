@@ -16,7 +16,7 @@ export default function Home() {
 			onClick={handleClick}
 			className='rounded-lg border-4 border-dashed p-4 h-[85vh] flex items-center justify-center cursor-pointer'
 		>
-			<h1 className='block text-bold text-4xl transition-colors text-foreground/60 cursor-pointer'>
+			<h1 className='block text-bold text-xl sm:text-4xl transition-colors text-foreground/60 cursor-pointer'>
 				перетащите ваши файлы сюда (или просто нажмите)
 			</h1>
 
