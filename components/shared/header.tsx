@@ -24,7 +24,7 @@ export const Header: React.FC<Props> = ({ className }) => {
 					className
 				)}
 			>
-				<div className='container px-6 flex h-14 max-w-screen-2xl items-center justify-between'>
+				<div className='px-6 flex h-14 w-full items-center justify-between'>
 					{/* Название и логотип */}
 					<div className='flex items-center'>
 						<Link className='flex items-center mr-4' href={'/'}>
