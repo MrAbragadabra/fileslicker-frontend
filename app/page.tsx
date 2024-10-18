@@ -1,21 +1,32 @@
 'use client'
 
+import { useRef } from 'react'
+
 export default function Home() {
+	const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+	const handleClick = () => {
+		if (fileInputRef.current) {
+			fileInputRef.current.click()
+		}
+	}
+
 	return (
-		<section>
-			<p>
-				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex iste odit
-				odio repellendus, tempore dignissimos a hic, voluptates et ratione
-				veniam sapiente nesciunt atque ad repellat excepturi. Deserunt fugiat
-				illum voluptatum asperiores ad molestias accusamus quam earum eos
-				mollitia, ex atque sint rem facilis. Fuga minus, numquam ipsum soluta
-				cumque, neque eius architecto reiciendis fugiat explicabo aperiam
-				reprehenderit officia dolorum obcaecati officiis sunt repellendus,
-				facere quas eos ipsam asperiores optio fugit. Dicta itaque voluptatibus
-				praesentium perferendis corporis maxime iure cupiditate alias labore? A
-				corporis fugit alias expedita. Mollitia consequatur illo tempora maiores
-				dolore nostrum laborum porro. Culpa dolores nobis soluta!
-			</p>
+		<section
+			onClick={handleClick}
+			className='rounded-lg border-4 border-dashed p-4 h-[85vh] flex items-center justify-center cursor-pointer'
+		>
+			<h1 className='block text-bold text-4xl transition-colors text-foreground/60 cursor-pointer'>
+				перетащите ваши файлы сюда (или просто нажмите)
+			</h1>
+
+			{/* Скрытый input для загрузки файлов */}
+			<input
+				type='file'
+				ref={fileInputRef}
+				style={{ display: 'none' }}
+				multiple
+			/>
 		</section>
 	)
 }
