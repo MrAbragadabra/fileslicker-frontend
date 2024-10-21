@@ -1,3 +1,4 @@
+'use client'
 import {
 	Dialog,
 	DialogContent,
@@ -14,9 +15,11 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
+import { toast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import LoginForm from './login-form'
 import SignupForm from './signup-form'
 import { ThemeSwitcher } from './theme-switcher'
@@ -26,6 +29,16 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ className }) => {
+	const [isOpen, setIsOpen] = useState(false)
+
+	const handleClose = () => {
+		setIsOpen(false)
+		toast({
+			title: 'Нажатие!',
+			description: 'Вы нажали на кнопку! Поздравляем!',
+		})
+	}
+
 	return (
 		<>
 			<header
@@ -95,9 +108,9 @@ export const Header: React.FC<Props> = ({ className }) => {
 
 							{/* Мобильное меню */}
 							<div className='flex sm:hidden'>
-								<Sheet>
+								<Sheet open={isOpen} onOpenChange={setIsOpen}>
 									<SheetTrigger>
-										<ChevronDown />
+										<ChevronDown onClick={() => setIsOpen(true)} />
 									</SheetTrigger>
 									<SheetContent side={'left'}>
 										<SheetHeader>
@@ -124,22 +137,25 @@ export const Header: React.FC<Props> = ({ className }) => {
 												</Link>
 											</SheetTitle>
 											<SheetDescription>
-												<div className='flex flex-col gap-4 mt-6'>
+												<div className='flex-col gap-6 mt-6'>
 													<div>
-														<Link
-															className='transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
-															href={'/signup'}
-														>
-															Регистрация
-														</Link>
-													</div>
-													<div>
-														<Link
-															className='transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
-															href={'/login'}
-														>
-															Вход
-														</Link>
+														<div>
+															<p
+																onClick={handleClose}
+																className='cursor-pointer transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
+															>
+																Регистрация
+															</p>
+														</div>
+
+														<div>
+															<p
+																onClick={handleClose}
+																className='cursor-pointer transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
+															>
+																Вход
+															</p>
+														</div>
 													</div>
 												</div>
 											</SheetDescription>
