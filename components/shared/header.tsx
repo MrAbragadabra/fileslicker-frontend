@@ -1,4 +1,12 @@
 import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog'
+import {
 	Sheet,
 	SheetContent,
 	SheetDescription,
@@ -9,6 +17,8 @@ import {
 import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import LoginForm from './login-form'
+import SignupForm from './signup-form'
 import { ThemeSwitcher } from './theme-switcher'
 
 interface Props {
@@ -51,18 +61,36 @@ export const Header: React.FC<Props> = ({ className }) => {
 						<nav className='mr-4 items-center'>
 							{/* Десктопное меню */}
 							<div className='hidden sm:flex gap-4'>
-								<Link
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
-									href={'/signup'}
-								>
-									Регистрация
-								</Link>
-								<Link
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
-									href={'/login'}
-								>
-									Вход
-								</Link>
+								<Dialog>
+									<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
+										Регистрация
+									</DialogTrigger>
+									<DialogContent>
+										<DialogHeader>
+											<DialogTitle>Регистрация</DialogTitle>
+											<DialogDescription>
+												Для того, чтобы получить больше функций, нужно пройти
+												регистрацию
+											</DialogDescription>
+											<SignupForm />
+										</DialogHeader>
+									</DialogContent>
+								</Dialog>
+
+								<Dialog>
+									<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
+										Вход
+									</DialogTrigger>
+									<DialogContent>
+										<DialogHeader>
+											<DialogTitle>Авторизация</DialogTitle>
+											<DialogDescription>
+												После регистрации можно войти на сайт :3
+											</DialogDescription>
+											<LoginForm />
+										</DialogHeader>
+									</DialogContent>
+								</Dialog>
 							</div>
 
 							{/* Мобильное меню */}
@@ -90,7 +118,9 @@ export const Header: React.FC<Props> = ({ className }) => {
 															strokeWidth='11'
 														/>
 													</svg>
-													<span className='font-bold text-xl block'>fileslicker</span>
+													<span className='font-bold text-xl block'>
+														fileslicker
+													</span>
 												</Link>
 											</SheetTitle>
 											<SheetDescription>
