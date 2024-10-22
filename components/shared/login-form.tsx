@@ -33,7 +33,15 @@ const formSchema = z.object({
 		.trim(),
 })
 
-export default function LoginForm() {
+interface LoginFormProps {
+	DialogTriggerClassName?: string
+	onClick?: () => void
+}
+
+export default function LoginForm({
+	DialogTriggerClassName,
+	onClick,
+}: LoginFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -52,7 +60,13 @@ export default function LoginForm() {
 	return (
 		<div>
 			<Dialog>
-				<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
+				<DialogTrigger
+					onClick={onClick}
+					className={
+						DialogTriggerClassName ||
+						'transition-colors hover:text-foreground/80 text-foreground/60'
+					}
+				>
 					Вход
 				</DialogTrigger>
 				<DialogContent>

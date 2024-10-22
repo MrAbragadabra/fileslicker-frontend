@@ -48,7 +48,15 @@ const formSchema = z
 		}
 	})
 
-export default function SignupForm() {
+interface SignupFormProps {
+	DialogTriggerClassName?: string
+	onClick?: () => void
+}
+
+export default function SignupForm({
+	DialogTriggerClassName,
+	onClick,
+}: SignupFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -68,7 +76,13 @@ export default function SignupForm() {
 	return (
 		<div>
 			<Dialog>
-				<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
+				<DialogTrigger
+					onClick={onClick}
+					className={
+						DialogTriggerClassName ||
+						'transition-colors hover:text-foreground/80 text-foreground/60'
+					}
+				>
 					Регистрация
 				</DialogTrigger>
 				<DialogContent>

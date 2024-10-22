@@ -10,7 +10,6 @@ import {
 import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
 import LoginForm from './login-form'
 import SignupForm from './signup-form'
 import { ThemeSwitcher } from './theme-switcher'
@@ -20,8 +19,6 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ className }) => {
-	const [isOpen, setIsOpen] = useState(false)
-
 	return (
 		<>
 			<header
@@ -64,9 +61,9 @@ export const Header: React.FC<Props> = ({ className }) => {
 
 							{/* Мобильное меню */}
 							<div className='flex sm:hidden'>
-								<Sheet open={isOpen} onOpenChange={setIsOpen}>
+								<Sheet>
 									<SheetTrigger>
-										<ChevronDown onClick={() => setIsOpen(true)} />
+										<ChevronDown />
 									</SheetTrigger>
 									<SheetContent side={'left'}>
 										<SheetHeader>
@@ -93,11 +90,11 @@ export const Header: React.FC<Props> = ({ className }) => {
 												</Link>
 											</SheetTitle>
 											<SheetDescription>
-												<div className='flex-col gap-6 mt-6'>
+												<div className='flex-col justify-center gap-4 mt-6'>
 													<div>
-														<SignupForm />
+														<SignupForm DialogTriggerClassName='mb-4 text-xl transition-colors hover:text-foreground/80 text-foreground/60' />
 
-														<LoginForm />
+														<LoginForm DialogTriggerClassName='text-xl transition-colors hover:text-foreground/80 text-foreground/60' />
 													</div>
 												</div>
 											</SheetDescription>
