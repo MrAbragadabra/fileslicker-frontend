@@ -1,13 +1,5 @@
 'use client'
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog'
-import {
 	Sheet,
 	SheetContent,
 	SheetDescription,
@@ -15,7 +7,6 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
-import { toast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
@@ -30,14 +21,6 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ className }) => {
 	const [isOpen, setIsOpen] = useState(false)
-
-	const handleClose = () => {
-		setIsOpen(false)
-		toast({
-			title: 'Нажатие!',
-			description: 'Вы нажали на кнопку! Поздравляем!',
-		})
-	}
 
 	return (
 		<>
@@ -74,36 +57,9 @@ export const Header: React.FC<Props> = ({ className }) => {
 						<nav className='mr-4 items-center'>
 							{/* Десктопное меню */}
 							<div className='hidden sm:flex gap-4'>
-								<Dialog>
-									<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
-										Регистрация
-									</DialogTrigger>
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>Регистрация</DialogTitle>
-											<DialogDescription>
-												Для того, чтобы получить больше функций, нужно пройти
-												регистрацию
-											</DialogDescription>
-											<SignupForm />
-										</DialogHeader>
-									</DialogContent>
-								</Dialog>
+								<SignupForm />
 
-								<Dialog>
-									<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
-										Вход
-									</DialogTrigger>
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>Авторизация</DialogTitle>
-											<DialogDescription>
-												После регистрации можно войти на сайт :3
-											</DialogDescription>
-											<LoginForm />
-										</DialogHeader>
-									</DialogContent>
-								</Dialog>
+								<LoginForm />
 							</div>
 
 							{/* Мобильное меню */}
@@ -139,23 +95,9 @@ export const Header: React.FC<Props> = ({ className }) => {
 											<SheetDescription>
 												<div className='flex-col gap-6 mt-6'>
 													<div>
-														<div>
-															<p
-																onClick={handleClose}
-																className='cursor-pointer transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
-															>
-																Регистрация
-															</p>
-														</div>
+														<SignupForm />
 
-														<div>
-															<p
-																onClick={handleClose}
-																className='cursor-pointer transition-colors hover:text-foreground/80 text-foreground/60 text-xl'
-															>
-																Вход
-															</p>
-														</div>
+														<LoginForm />
 													</div>
 												</div>
 											</SheetDescription>

@@ -9,6 +9,15 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
+
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -57,51 +66,69 @@ export default function SignupForm() {
 	}
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 w-full'>
-				<FormField
-					control={form.control}
-					name='email'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Почта</FormLabel>
-							<FormControl>
-								<Input {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='password'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Пароль</FormLabel>
-							<FormControl>
-								<Input type='password' {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='password_repeat'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Повтор пароля</FormLabel>
-							<FormControl>
-								<Input type='password' {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button className='w-full' variant={'default'} type='submit'>
-					Создать аккаунт
-				</Button>
-			</form>
-		</Form>
+		<div>
+			<Dialog>
+				<DialogTrigger className='transition-colors hover:text-foreground/80 text-foreground/60'>
+					Регистрация
+				</DialogTrigger>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Регистрация</DialogTitle>
+						<DialogDescription>
+							Для того, чтобы получить больше функций, нужно пройти регистрацию
+						</DialogDescription>
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(onSubmit)}
+								className='space-y-4 w-full'
+							>
+								<FormField
+									control={form.control}
+									name='email'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Почта</FormLabel>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='password'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Пароль</FormLabel>
+											<FormControl>
+												<Input type='password' {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='password_repeat'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Повтор пароля</FormLabel>
+											<FormControl>
+												<Input type='password' {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<Button className='w-full' variant={'default'} type='submit'>
+									Создать аккаунт
+								</Button>
+							</form>
+						</Form>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>
+		</div>
 	)
 }
