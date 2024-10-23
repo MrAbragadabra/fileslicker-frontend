@@ -20,8 +20,8 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
+import { signupUser } from '@/utils/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -71,21 +71,23 @@ export default function SignupForm({
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			const response = await axios.post(
-				'http://localhost:8000/api/users/signup',
-				{
-					email: values.email,
-					name: values.name,
-					password: values.password,
-				}
-			)
+			const response = await signupUser({
+				name: values.name,
+				email: values.email,
+				password: values.password,
+			})
+
+			console.log(response)
 
 			toast({
-				title: 'Успешая регистрация!',
-				description: `${response.data} успешно зарегистрирован!`,
+				title: 'Успешная регистрация!',
+				description: 'Вы зарегистрировались успешно!',
 			})
 		} catch {
-			console.log('Ошибка регистрации')
+			toast({
+				title: 'Ошибка регистрации',
+				description: 'Попробуйте снова пройти регистрацию',
+			})
 		}
 	}
 
