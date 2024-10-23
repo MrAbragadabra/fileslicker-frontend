@@ -21,12 +21,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const formSchema = z
 	.object({
 		email: z.string().email({ message: 'Введите корректную почту' }).trim(),
+		name: z.string().min(3).max(50).trim(),
 		password: z
 			.string()
 			.min(8, { message: 'пароль должен быть минимум 8 символов' })
@@ -61,16 +63,30 @@ export default function SignupForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: '',
+			name: '',
 			password: '',
 			password_repeat: '',
 		},
 	})
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		toast({
-			title: 'Успешная регистрация',
-			description: `Пользователь ${values.email} успешно зарегистрирован!`,
-		})
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		try {
+			const response = await axios.post(
+				'http://localhost:8000/api/users/signup',
+				{
+					email: values.email,
+					name: values.name,
+					password: values.password,
+				}
+			)
+
+			toast({
+				title: 'Успешая регистрация!',
+				description: `${response.data} успешно зарегистрирован!`,
+			})
+		} catch {
+			console.log('Ошибка регистрации')
+		}
 	}
 
 	return (
@@ -102,6 +118,19 @@ export default function SignupForm({
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel>Почта</FormLabel>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='name'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Имя</FormLabel>
 											<FormControl>
 												<Input {...field} />
 											</FormControl>
