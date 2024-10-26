@@ -1,4 +1,4 @@
-import { Header } from '@/components/shared/header'
+import { Header } from '@/components/shared/header/header'
 import { Toaster } from '@/components/ui/toaster'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
@@ -8,8 +8,9 @@ import { ThemeProvider } from 'next-themes'
 import './globals.css'
 
 export const metadata: Metadata = {
-	title: 'Fileslicker',
-	description: 'Fileslicker - облачное хранилище',
+	title: 'fileslicker',
+	description:
+		'fileslicker - хранение ваших фотографий котиков и бутербродиков ^._.^',
 }
 
 export default function RootLayout({
@@ -29,7 +30,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Header />
-					<main className='px-6 mt-10 w-full'>{children}</main>
+					<main className='px-6 mt-10 w-full h-[80vh]'>{children}</main>
 					<Toaster />
 				</ThemeProvider>
 			</body>
