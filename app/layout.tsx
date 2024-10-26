@@ -1,4 +1,4 @@
-import { Header } from '@/components/shared/header'
+import { Header } from '@/components/shared/header/header'
 import { Toaster } from '@/components/ui/toaster'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
