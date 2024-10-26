@@ -1,4 +1,5 @@
 import { Logo } from './logo'
+import { MobileMenu } from './navigation/mobile-menu'
 import { NavigationMenu } from './navigation/navigation-menu'
 import { ThemeSwitcher } from './theme-switcher'
 
@@ -8,7 +9,8 @@ export const Header: React.FC = ({}) => {
 			<div className='px-6 h-16 flex items-center justify-between'>
 				<Logo />
 				<div className='flex items-center gap-6 justify-between'>
-					<NavigationMenu />
+					<NavigationMenu className='hidden md:flex' />
+					<MobileMenu className='flex md:hidden'/>
 					<ThemeSwitcher />
 				</div>
 			</div>

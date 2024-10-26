@@ -32,7 +32,7 @@ export const NavigationElement = (props: Props) => {
 		)
 	} else {
 		return (
-			<span className={className || 'font-bold text-foreground/60'}>
+			<span className={className || 'font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'}>
 				{caption}
 			</span>
 		)
