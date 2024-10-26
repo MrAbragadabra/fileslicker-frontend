@@ -30,7 +30,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Header />
-					<main className='px-6 mt-10 w-full'>{children}</main>
+					<main className='px-6 mt-10 w-full h-[80vh]'>{children}</main>
 					<Toaster />
 				</ThemeProvider>
 			</body>
