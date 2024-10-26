@@ -10,7 +10,7 @@ export const Header: React.FC = ({}) => {
 				<Logo />
 				<div className='flex items-center gap-6 justify-between'>
 					<NavigationMenu className='hidden md:flex' />
-					<MobileMenu className='flex md:hidden'/>
+					<MobileMenu className='flex md:hidden' />
 					<ThemeSwitcher />
 				</div>
 			</div>
