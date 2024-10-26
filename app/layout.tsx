@@ -8,8 +8,9 @@ import { ThemeProvider } from 'next-themes'
 import './globals.css'
 
 export const metadata: Metadata = {
-	title: 'Fileslicker',
-	description: 'Fileslicker - облачное хранилище',
+	title: 'fileslicker',
+	description:
+		'fileslicker - хранение ваших фотографий котиков и бутербродиков ^._.^',
 }
 
 export default function RootLayout({
