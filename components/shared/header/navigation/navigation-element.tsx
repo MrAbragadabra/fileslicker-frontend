@@ -3,14 +3,14 @@ import Link from 'next/link'
 type LinkProps = {
 	type: 'link'
 	href: string
-	className?: string
 	caption: string
+	className?: string
 }
 
 type TextProps = {
 	type: 'text'
-	className?: string
 	caption: string
+	className?: string
 }
 
 type Props = LinkProps | TextProps
