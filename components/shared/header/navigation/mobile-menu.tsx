@@ -7,8 +7,9 @@ import {
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { ChevronDown } from 'lucide-react'
+import { LoginForm } from '../../forms/login'
+import { SignUpForm } from '../../forms/signup'
 import { Logo } from '../logo'
-import { NavigationElement } from './navigation-element'
 
 interface Props {
 	className?: string
@@ -28,16 +29,8 @@ export const MobileMenu = ({ className }: Props) => {
 						</SheetTitle>
 						<SheetDescription>
 							<div className='mt-6 space-y-6 flex-col text-xl'>
-								<NavigationElement
-									className='block font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'
-									type='text'
-									caption='Создание аккаунта'
-								/>
-								<NavigationElement
-									className='block font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'
-									type='text'
-									caption='Вход'
-								/>
+								<SignUpForm />
+								<LoginForm />
 							</div>
 						</SheetDescription>
 					</SheetHeader>

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
-import { NavigationElement } from './navigation-element'
+import { LoginForm } from '../../forms/login'
+import { SignUpForm } from '../../forms/signup'
 
 interface Props {
 	className?: string
@@ -8,8 +9,8 @@ interface Props {
 export const NavigationMenu = ({ className }: Props) => {
 	return (
 		<nav className={cn(className, 'space-x-6')}>
-			<NavigationElement type='text' caption='Создание аккаунта' />
-			<NavigationElement type='text' caption='Вход' />
+			<SignUpForm />
+			<LoginForm />
 		</nav>
 	)
 }
