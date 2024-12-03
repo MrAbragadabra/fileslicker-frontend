@@ -19,6 +19,20 @@ export interface loginData {
 	password: string
 }
 
+export interface editUserData {
+	name: string
+	id: number
+}
+
+export const editUser = async (data: editUserData, token: string) => {
+	const response = await api.post('/profile/edit', data, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
 export const signupUser = async (data: signupData) => {
 	const response = await api.post('/register', data)
 	return response.data

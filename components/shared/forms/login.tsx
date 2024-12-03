@@ -66,6 +66,10 @@ export const LoginForm: React.FC = ({}) => {
 
 			window.dispatchEvent(new Event('storage'))
 
+			toast({
+				title: 'Вы успешно авторизованы!',
+			})
+
 			router.push('/profile')
 		} catch {
 			setLoading(false)
