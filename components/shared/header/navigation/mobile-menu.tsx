@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/sheet'
 import { getUser } from '@/lib/api'
 import { ChevronDown } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { LoginForm } from '../../forms/login'
 import { SignUpForm } from '../../forms/signup'
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export const MobileMenu = ({ className }: Props) => {
+	const router = useRouter()
 	const [userStatus, setUserStatus] = useState<'guest' | 'user' | 'admin'>(
 		'guest'
 	)
@@ -40,6 +42,12 @@ export const MobileMenu = ({ className }: Props) => {
 		} else {
 			setUserStatus('guest') // Нет токена — гость
 		}
+	}
+
+	const logout = () => {
+		localStorage.removeItem('token')
+		fetchUserStatus()
+		router.push('/')
 	}
 
 	useEffect(() => {
@@ -79,6 +87,7 @@ export const MobileMenu = ({ className }: Props) => {
 
 								{userStatus === 'user' && (
 									<NavigationElement
+										className='block'
 										href='/profile'
 										caption='Профиль'
 										type='link'
@@ -87,9 +96,19 @@ export const MobileMenu = ({ className }: Props) => {
 
 								{userStatus === 'admin' && (
 									<NavigationElement
+										className='block'
 										href='/dashboard'
 										caption='Панель управления'
 										type='link'
+									/>
+								)}
+
+								{(userStatus === 'admin' || userStatus === 'user') && (
+									<NavigationElement
+										className='block'
+										onClick={logout}
+										caption='Выйти'
+										type='text'
 									/>
 								)}
 							</div>
