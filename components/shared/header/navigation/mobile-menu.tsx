@@ -87,7 +87,7 @@ export const MobileMenu = ({ className }: Props) => {
 
 								{userStatus === 'user' && (
 									<NavigationElement
-										className='block'
+										className='block font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'
 										href='/profile'
 										caption='Профиль'
 										type='link'
@@ -96,7 +96,7 @@ export const MobileMenu = ({ className }: Props) => {
 
 								{userStatus === 'admin' && (
 									<NavigationElement
-										className='block'
+										className='block font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'
 										href='/dashboard'
 										caption='Панель управления'
 										type='link'
@@ -105,7 +105,7 @@ export const MobileMenu = ({ className }: Props) => {
 
 								{(userStatus === 'admin' || userStatus === 'user') && (
 									<NavigationElement
-										className='block'
+										className='block font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'
 										onClick={logout}
 										caption='Выйти'
 										type='text'
