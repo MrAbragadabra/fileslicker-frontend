@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 const API_URL = 'http://127.0.0.1:8000/api'
 
@@ -66,18 +66,20 @@ export interface uploadGuestData {
 	storage_period: string
 }
 
-export const uploadFilesGuest = async (data: uploadGuestData) => {
+export const uploadFilesGuest = async (
+	data: uploadGuestData,
+	config: AxiosRequestConfig = {}
+) => {
 	const formData = new FormData()
 
-	// Добавляем файлы в FormData
+	// Добавляем файлы и storage_period в FormData
 	data.files.forEach(file => {
 		formData.append('files[]', file)
 	})
-
-	// Добавляем storage_period
 	formData.append('storage_period', data.storage_period)
 
 	const response = await api.post('/upload-guest', formData, {
+		...config,
 		headers: {
 			'Content-Type': 'multipart/form-data',
 		},
