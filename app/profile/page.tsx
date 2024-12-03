@@ -95,6 +95,12 @@ export default function Profile() {
 		}
 	}
 
+	const deleteUser = async () => {
+		toast({
+			title: 'Вы не были удалены, потому что это просто кнопка'
+		})
+	}
+
 	return (
 		<>
 			<Form {...form}>
@@ -145,6 +151,13 @@ export default function Profile() {
 					</Button>
 				</form>
 			</Form>
+			<Button
+				onClick={deleteUser}
+				className='mt-4 w-full'
+				variant={'destructive'}
+			>
+				Удалить профиль
+			</Button>
 		</>
 	)
 }

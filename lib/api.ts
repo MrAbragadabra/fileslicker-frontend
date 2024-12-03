@@ -60,3 +60,27 @@ export const logoutUser = async (token: string) => {
 	})
 	return response.data
 }
+
+export interface uploadGuestData {
+	files: File[]
+	storage_period: string
+}
+
+export const uploadFilesGuest = async (data: uploadGuestData) => {
+	const formData = new FormData()
+
+	// Добавляем файлы в FormData
+	data.files.forEach(file => {
+		formData.append('files[]', file)
+	})
+
+	// Добавляем storage_period
+	formData.append('storage_period', data.storage_period)
+
+	const response = await api.post('/upload-guest', formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+	return response.data
+}
