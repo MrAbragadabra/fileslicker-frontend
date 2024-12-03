@@ -1,3 +1,4 @@
+'use client'
 import {
 	Sheet,
 	SheetContent,
@@ -6,16 +7,56 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
+import { getUser } from '@/lib/api'
 import { ChevronDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { LoginForm } from '../../forms/login'
 import { SignUpForm } from '../../forms/signup'
 import { Logo } from '../logo'
+import { NavigationElement } from './navigation-element'
 
 interface Props {
 	className?: string
 }
 
 export const MobileMenu = ({ className }: Props) => {
+	const [userStatus, setUserStatus] = useState<'guest' | 'user' | 'admin'>(
+		'guest'
+	)
+
+	const fetchUserStatus = async () => {
+		const token = localStorage.getItem('token') // Получаем токен из localStorage
+		if (token) {
+			try {
+				const userData = await getUser(token) // Получаем данные пользователя
+				if (userData?.is_admin) {
+					setUserStatus('admin') // Пользователь с правами администратора
+				} else {
+					setUserStatus('user') // Просто пользователь
+				}
+			} catch {
+				setUserStatus('guest') // Если ошибка в запросе — считаем пользователя гостем
+			}
+		} else {
+			setUserStatus('guest') // Нет токена — гость
+		}
+	}
+
+	useEffect(() => {
+		fetchUserStatus()
+		// Слушаем изменение токена в localStorage
+		const handleStorageChange = () => {
+			fetchUserStatus()
+		}
+
+		window.addEventListener('storage', handleStorageChange)
+
+		// Очистка события при демонтировании компонента
+		return () => {
+			window.removeEventListener('storage', handleStorageChange)
+		}
+	}, []) // Запрашиваем статус при монтировании компонента
+
 	return (
 		<div className={className}>
 			<Sheet>
@@ -29,8 +70,28 @@ export const MobileMenu = ({ className }: Props) => {
 						</SheetTitle>
 						<SheetDescription>
 							<div className='mt-6 space-y-6 flex-col text-xl'>
-								<SignUpForm />
-								<LoginForm />
+								{userStatus === 'guest' && (
+									<>
+										<SignUpForm />
+										<LoginForm />
+									</>
+								)}
+
+								{userStatus === 'user' && (
+									<NavigationElement
+										href='/profile'
+										caption='Профиль'
+										type='link'
+									/>
+								)}
+
+								{userStatus === 'admin' && (
+									<NavigationElement
+										href='/dashboard'
+										caption='Панель управления'
+										type='link'
+									/>
+								)}
 							</div>
 						</SheetDescription>
 					</SheetHeader>

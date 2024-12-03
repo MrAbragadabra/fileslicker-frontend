@@ -11,6 +11,7 @@ type TextProps = {
 	type: 'text'
 	caption: string
 	className?: string
+	onClick?: () => void
 }
 
 type Props = LinkProps | TextProps
@@ -30,6 +31,7 @@ export const NavigationElement = (props: Props) => {
 				</Link>
 			) : (
 				<span
+					onClick={props.onClick}
 					className={
 						props.className ||
 						'font-bold transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer'

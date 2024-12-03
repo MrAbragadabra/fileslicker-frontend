@@ -20,13 +20,17 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/hooks/use-toast'
+import { loginUser } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { NavigationElement } from '../header/navigation/navigation-element'
 
 export const LoginForm: React.FC = ({}) => {
+	const router = useRouter()
 	const [loading, setLoading] = useState(false)
 
 	const formSchema = z.object({
@@ -48,13 +52,28 @@ export const LoginForm: React.FC = ({}) => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setLoading(true)
-		console.clear()
-		console.log('Авторизация прошла успешно!')
-		console.log(values)
 
-		setTimeout(() => {
+		try {
+			const response = await loginUser({
+				email: values.email,
+				password: values.password,
+			})
+
+			const tokenString = response.token
+			const [, token] = tokenString.split('|')
+
+			localStorage.setItem('token', token)
+
+			window.dispatchEvent(new Event('storage'))
+
+			router.push('/profile')
+		} catch {
 			setLoading(false)
-		}, 2000)
+
+			toast({
+				title: 'Упс! Не получилось вас авторизовать!',
+			})
+		}
 	}
 
 	return (

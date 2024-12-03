@@ -20,6 +20,8 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/hooks/use-toast'
+import { signupUser } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
@@ -70,13 +72,22 @@ export const SignUpForm: React.FC = ({}) => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setLoading(true)
-		console.clear()
-		console.log('Регистрация прошла успешно!')
-		console.log(values)
 
-		setTimeout(() => {
+		try {
+			await signupUser({
+				name: values.name,
+				email: values.email,
+				password: values.password,
+			})
+
 			setLoading(false)
-		}, 2000)
+		} catch {
+			setLoading(false)
+
+			toast({
+				title: 'Упс! Не получилось вас зарегистрировать!',
+			})
+		}
 	}
 
 	return (
