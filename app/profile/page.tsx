@@ -24,8 +24,6 @@ export default function Profile() {
 		id: number
 		name: string
 	}
-
-	const [user, setUser] = useState<User | null>(null)
 	const [loading, setLoading] = useState(false)
 
 	const formSchema = z.object({
@@ -53,11 +51,6 @@ export default function Profile() {
 			if (token) {
 				try {
 					const userData = await getUser(token)
-					const asd: User = {
-						name: userData.name,
-						id: userData.id,
-					}
-					setUser(asd)
 
 					// Устанавливаем значения в форму
 					form.setValue('email', userData.email || '')
@@ -103,50 +96,55 @@ export default function Profile() {
 	}
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 w-full'>
-				<FormField
-					control={form.control}
-					name='email'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Почта</FormLabel>
-							<FormControl>
-								<Input {...field} disabled />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='name'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Имя</FormLabel>
-							<FormControl>
-								<Input {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button
-					className='w-full'
-					variant={'default'}
-					type='submit'
-					disabled={loading}
+		<>
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className='space-y-4 w-full'
 				>
-					{loading ? (
-						<>
-							<LoaderCircle className='animate-spin mr-2' />
-							<span>Редактировать профиль</span>
-						</>
-					) : (
-						'Редактировать профиль'
-					)}
-				</Button>
-			</form>
-		</Form>
+					<FormField
+						control={form.control}
+						name='email'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Почта</FormLabel>
+								<FormControl>
+									<Input {...field} disabled />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='name'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Имя</FormLabel>
+								<FormControl>
+									<Input {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<Button
+						className='w-full'
+						variant={'default'}
+						type='submit'
+						disabled={loading}
+					>
+						{loading ? (
+							<>
+								<LoaderCircle className='animate-spin mr-2' />
+								<span>Редактировать профиль</span>
+							</>
+						) : (
+							'Редактировать профиль'
+						)}
+					</Button>
+				</form>
+			</Form>
+		</>
 	)
 }
