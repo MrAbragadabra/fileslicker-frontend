@@ -107,7 +107,7 @@ export const Dropzone: React.FC = () => {
 		<div className='space-y-4'>
 			<AnimatePresence>
 				{files.length === 0 && (
-					/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+					/* eslint-disable */
 					<motion.div
 						layout
 						initial={{ opacity: 0, scale: 0.95 }}
@@ -128,6 +128,7 @@ export const Dropzone: React.FC = () => {
 							<CloudUpload strokeWidth={2.25} size={40} />
 						</div>
 					</motion.div>
+					/* eslint-enable */
 				)}
 
 				{files.length > 0 && (
