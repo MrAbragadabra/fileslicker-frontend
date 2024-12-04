@@ -86,3 +86,31 @@ export const uploadFilesGuest = async (
 	})
 	return response.data
 }
+
+export interface uploadUserData {
+	files: File[]
+	storage_period: string
+}
+
+export const uploadFilesUser = async (
+	token: string,
+	data: uploadGuestData,
+	config: AxiosRequestConfig = {}
+) => {
+	const formData = new FormData()
+
+	// Добавляем файлы и storage_period в FormData
+	data.files.forEach(file => {
+		formData.append('files[]', file)
+	})
+	formData.append('storage_period', data.storage_period)
+
+	const response = await api.post('/upload-user', formData, {
+		...config,
+		headers: {
+			'Content-Type': 'multipart/form-data',
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
