@@ -1,3 +1,7 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+	"extends": ["next/core-web-vitals", "next/typescript"],
+	"rules": {
+		"react/jsx-no-target-blank": "off", // Отключает проверку на использование target="_blank"
+		"react/no-unknown-property": "off" // Отключает ошибку на незнакомые атрибуты (например, для motion.div)
+	}
 }
