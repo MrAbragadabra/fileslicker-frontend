@@ -52,6 +52,20 @@ export const getUser = async (token: string) => {
 	return response.data
 }
 
+export const getFiles = async (upload_id: number) => {
+	const response = await api.get(`/files/${upload_id}`)
+	return response.data
+}
+
+export const getUploads = async (token: string, id: number) => {
+	const response = await api.get(`/uploads/${id}`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
 export const logoutUser = async (token: string) => {
 	const response = await api.post('/logout', {
 		headers: {

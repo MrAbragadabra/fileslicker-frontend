@@ -107,13 +107,12 @@ export const Dropzone: React.FC = () => {
 		<div className='space-y-4'>
 			<AnimatePresence>
 				{files.length === 0 && (
-					/* eslint-disable */
 					<motion.div
 						layout
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
-						className={`cursor-pointer w-full h-40 flex items-center justify-center border-4 ${
+						className={`cursor-pointer w-full h-[80vh] flex items-center justify-center border-4 ${
 							isDragActive
 								? 'border-dashed border-blue-500'
 								: 'border-dashed border-gray-300'
@@ -128,7 +127,6 @@ export const Dropzone: React.FC = () => {
 							<CloudUpload strokeWidth={2.25} size={40} />
 						</div>
 					</motion.div>
-					/* eslint-enable */
 				)}
 
 				{files.length > 0 && (
@@ -153,6 +151,7 @@ export const Dropzone: React.FC = () => {
 						</ul>
 
 						<div className='space-y-2'>
+							<hr className='mb-2' />
 							<label htmlFor='storage-period' className='font-medium'>
 								Выберите период хранения:
 							</label>
