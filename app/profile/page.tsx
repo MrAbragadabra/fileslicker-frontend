@@ -21,10 +21,17 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
-import { deleteUpload, editUser, getUploads, getUser } from '@/lib/api'
+import {
+	deleteUpload,
+	deleteUser,
+	editUser,
+	getUploads,
+	getUser,
+} from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -36,6 +43,7 @@ interface Upload {
 }
 
 export default function Profile() {
+	const router = useRouter()
 	const [loading, setLoading] = useState(false)
 	const [uploads, setUploads] = useState<Upload[]>([])
 	const [userId, setUserId] = useState<number | null>(null)
@@ -106,6 +114,49 @@ export default function Profile() {
 			} finally {
 				setLoading(false)
 			}
+		}
+	}
+
+	const deleteUserClick = async () => {
+		const token = localStorage.getItem('token')
+
+		if (!token) {
+			toast({
+				title: 'Ошибка',
+				description: 'Вы не авторизованы!',
+			})
+			return
+		}
+
+		if (
+			!confirm(
+				'Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо.'
+			)
+		) {
+			return
+		}
+
+		setLoading(true)
+
+		try {
+			await deleteUser(token) // Выполняем запрос на удаление пользователя
+
+			localStorage.removeItem('token') // Удаляем токен
+			window.dispatchEvent(new Event('storage')) // Обновляем навигационное меню
+			toast({
+				title: 'Аккаунт удалён',
+				description: 'Ваш аккаунт успешно удалён.',
+			})
+
+			router.push('/') // Перенаправляем на главную
+		} catch (error) {
+			console.error(error)
+			toast({
+				title: 'Ошибка удаления',
+				description: 'Не удалось удалить аккаунт. Попробуйте позже.',
+			})
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -227,10 +278,26 @@ export default function Profile() {
 						{loading ? (
 							<>
 								<LoaderCircle className='animate-spin mr-2' />
-								<span>Редактировать профиль</span>
+								<span>Редактировать аккаунт</span>
 							</>
 						) : (
-							'Редактировать профиль'
+							'Редактировать аккаунт'
+						)}
+					</Button>
+
+					<Button
+						onClick={deleteUserClick}
+						className='w-full'
+						variant={'destructive'}
+						disabled={loading}
+					>
+						{loading ? (
+							<>
+								<LoaderCircle className='animate-spin mr-2' />
+								<span>Удаление...</span>
+							</>
+						) : (
+							'Удалить аккаунт'
 						)}
 					</Button>
 				</form>

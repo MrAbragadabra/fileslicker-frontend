@@ -24,6 +24,16 @@ export interface editUserData {
 	id: number
 }
 
+export interface addComplaintData {
+	comment: string
+	upload_id: number
+}
+
+export const addComplaint = async (data: addComplaintData) => {
+	const response = await api.post('/complaint/add', data)
+	return response.data
+}
+
 export const editUser = async (data: editUserData, token: string) => {
 	const response = await api.post('/profile/edit', data, {
 		headers: {
@@ -82,6 +92,20 @@ export const logoutUser = async (token: string) => {
 export const deleteUpload = async (id: number, token: string) => {
 	const response = await api.post(
 		`/upload/delete/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+
+	return response.data
+}
+
+export const deleteUser = async (token: string) => {
+	const response = await api.post(
+		`/profile/delete`,
 		{},
 		{
 			headers: {

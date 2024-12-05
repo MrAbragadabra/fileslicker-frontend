@@ -41,6 +41,9 @@ export const NavigationMenu = ({ className }: Props) => {
 
 		if (token) {
 			await logoutUser(token)
+
+			localStorage.removeItem('token')
+
 			fetchUserStatus()
 			router.push('/')
 		} else {

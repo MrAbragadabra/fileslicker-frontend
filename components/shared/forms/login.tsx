@@ -66,11 +66,18 @@ export const LoginForm: React.FC = ({}) => {
 
 			window.dispatchEvent(new Event('storage'))
 
+			console.log(response.user.is_admin)
+
 			toast({
 				title: 'Вы успешно авторизованы!',
 			})
 
-			router.push('/profile')
+			// Проверяем роль пользователя
+			if (response.user.is_admin === true) {
+				router.push('/dashboard') // Редирект для администратора
+			} else {
+				router.push('/profile') // Редирект для обычного пользователя
+			}
 		} catch {
 			setLoading(false)
 

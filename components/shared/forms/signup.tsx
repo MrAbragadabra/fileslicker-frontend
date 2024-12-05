@@ -81,6 +81,10 @@ export const SignUpForm: React.FC = ({}) => {
 			})
 
 			setLoading(false)
+
+			toast({
+				title: 'Вы успешно зарегистрированы!',
+			})
 		} catch {
 			setLoading(false)
 
