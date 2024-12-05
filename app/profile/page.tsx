@@ -21,10 +21,10 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
-import { editUser, getUploads, getUser } from '@/lib/api'
+import { deleteUpload, editUser, getUploads, getUser } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
-import Link from 'next/link' // Импортируем Link из next/link
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -57,7 +57,6 @@ export default function Profile() {
 		},
 	})
 
-	// Загружаем пользователя и значения формы
 	useEffect(() => {
 		const getUserData = async () => {
 			const token = localStorage.getItem('token')
@@ -66,12 +65,10 @@ export default function Profile() {
 				try {
 					const userData = await getUser(token)
 
-					// Устанавливаем значения в форму
 					form.setValue('email', userData.email || '')
 					form.setValue('name', userData.name || '')
 					setUserId(userData.id)
 
-					// Загружаем загрузки пользователя
 					const uploadsData = await getUploads(token, userData.id)
 					setUploads(uploadsData)
 				} catch (error) {
@@ -112,10 +109,37 @@ export default function Profile() {
 		}
 	}
 
-	const deleteUser = async () => {
-		toast({
-			title: 'Вы не были удалены, потому что это просто кнопка',
-		})
+	const handleDeleteUpload = async (id: number) => {
+		const token = localStorage.getItem('token')
+
+		if (!token) {
+			toast({
+				title: 'Ошибка',
+				description: 'Вы не авторизованы!',
+			})
+			return
+		}
+
+		try {
+			console.log(token)
+			console.log(id)
+			await deleteUpload(id, token) // Передаем только id и токен
+
+			toast({
+				title: 'Успех',
+				description: `Загрузка с ID ${id} удалена.`,
+			})
+
+			// Обновляем таблицу после удаления
+			const updatedUploads = await getUploads(token, userId!)
+			setUploads(updatedUploads)
+		} catch (error) {
+			console.error(error)
+			toast({
+				title: 'Ошибка удаления',
+				description: 'Не удалось удалить загрузку. Попробуйте позже.',
+			})
+		}
 	}
 
 	return (
@@ -127,7 +151,7 @@ export default function Profile() {
 						<TableHead>ID</TableHead>
 						<TableHead>Дата истечения</TableHead>
 						<TableHead>Удален</TableHead>
-						<TableHead>Действие</TableHead>
+						<TableHead>Действия</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -145,13 +169,16 @@ export default function Profile() {
 								})}
 							</TableCell>
 							<TableCell>{upload.is_deleted ? 'Да' : 'Нет'}</TableCell>
-							<TableCell>
-								{/* Используем Link вместо Button с as="a" */}
+							<TableCell className='flex space-x-2'>
 								<Link href={`/upload/${upload.id}`} passHref>
-									<Button className='w-full' variant={'outline'}>
-										Перейти
-									</Button>
+									<Button variant={'outline'}>Перейти</Button>
 								</Link>
+								<Button
+									variant={'destructive'}
+									onClick={() => handleDeleteUpload(upload.id)}
+								>
+									Удалить
+								</Button>
 							</TableCell>
 						</TableRow>
 					))}
@@ -208,13 +235,6 @@ export default function Profile() {
 					</Button>
 				</form>
 			</Form>
-			<Button
-				onClick={deleteUser}
-				className='my-4 w-full'
-				variant={'destructive'}
-			>
-				Удалить профиль
-			</Button>
 		</>
 	)
 }

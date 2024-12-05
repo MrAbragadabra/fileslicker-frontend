@@ -67,11 +67,29 @@ export const getUploads = async (token: string, id: number) => {
 }
 
 export const logoutUser = async (token: string) => {
-	const response = await api.post('/logout', {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	})
+	const response = await api.post(
+		'/logout',
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+	return response.data
+}
+
+export const deleteUpload = async (id: number, token: string) => {
+	const response = await api.post(
+		`/upload/delete/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+
 	return response.data
 }
 

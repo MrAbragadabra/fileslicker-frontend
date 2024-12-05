@@ -1,11 +1,12 @@
 'use client'
-import { getUser } from '@/lib/api'
+import { toast } from '@/hooks/use-toast'
+import { getUser, logoutUser } from '@/lib/api'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { LoginForm } from '../../forms/login'
 import { SignUpForm } from '../../forms/signup'
 import { NavigationElement } from './navigation-element'
-import { useRouter } from 'next/navigation'
 
 interface Props {
 	className?: string
@@ -35,10 +36,18 @@ export const NavigationMenu = ({ className }: Props) => {
 		}
 	}
 
-	const logout = () => {
-		localStorage.removeItem('token')
-		fetchUserStatus()
-		router.push('/')
+	const logout = async () => {
+		const token = localStorage.getItem('token')
+
+		if (token) {
+			await logoutUser(token)
+			fetchUserStatus()
+			router.push('/')
+		} else {
+			toast({
+				title: 'Что-то пошло не так при входе!',
+			})
+		}
 	}
 
 	useEffect(() => {
