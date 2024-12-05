@@ -11,6 +11,7 @@ import { toast } from '@/hooks/use-toast'
 import { uploadFilesGuest, uploadFilesUser } from '@/lib/api'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CloudUpload } from 'lucide-react'
+import { useRouter } from 'next/navigation' // Импортируем useRouter
 import { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
@@ -21,6 +22,7 @@ export const Dropzone: React.FC = () => {
 	)
 	const [isUploading, setIsUploading] = useState(false)
 	const [storagePeriod, setStoragePeriod] = useState('1h')
+	const router = useRouter() // Создаем экземпляр useRouter
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
 		onDrop: acceptedFiles => {
@@ -38,7 +40,7 @@ export const Dropzone: React.FC = () => {
 	const handleUpload = async () => {
 		setIsUploading(true)
 		try {
-			const token = localStorage.getItem('token') // Проверяем наличие токена в localStorage
+			const token = localStorage.getItem('token')
 			const progress: Record<string, number> = {}
 
 			files.forEach(file => {
@@ -46,9 +48,9 @@ export const Dropzone: React.FC = () => {
 			})
 			setUploadProgress(progress)
 
+			let response
 			if (token) {
-				// Если токен есть, вызываем uploadFilesUser
-				await uploadFilesUser(
+				response = await uploadFilesUser(
 					token,
 					{
 						files,
@@ -67,8 +69,7 @@ export const Dropzone: React.FC = () => {
 					}
 				)
 			} else {
-				// Если токена нет, вызываем uploadFilesGuest
-				await uploadFilesGuest(
+				response = await uploadFilesGuest(
 					{
 						files,
 						storage_period: storagePeriod,
@@ -91,6 +92,10 @@ export const Dropzone: React.FC = () => {
 				title: 'Файлы успешно загружены!',
 				description: `Загружено файлов: ${files.length}`,
 			})
+
+			// Редирект на страницу загрузки
+			const uploadId = response.upload_id
+			router.push(`/upload/${uploadId}`)
 		} catch {
 			toast({
 				title: 'Ошибка загрузки!',
@@ -160,13 +165,25 @@ export const Dropzone: React.FC = () => {
 									<SelectValue placeholder='Выберите период' />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value='1h'>1 час</SelectItem>
-									<SelectItem value='12h'>12 часов</SelectItem>
-									<SelectItem value='24h'>Сутки</SelectItem>
-									<SelectItem value='72h'>Трое суток</SelectItem>
-									<SelectItem value='168h'>Неделя</SelectItem>
-									<SelectItem value='336h'>Две недели</SelectItem>
-									<SelectItem value='720h'>Месяц</SelectItem>
+									{localStorage.getItem('token') ? (
+										<>
+											<SelectItem value='1h'>1 час</SelectItem>
+											<SelectItem value='12h'>12 часов</SelectItem>
+											<SelectItem value='24h'>Сутки</SelectItem>
+											<SelectItem value='72h'>Трое суток</SelectItem>
+											<SelectItem value='168h'>Неделя</SelectItem>
+											<SelectItem value='336h'>Две недели</SelectItem>
+											<SelectItem value='720h'>Месяц</SelectItem>
+										</>
+									) : (
+										<>
+											<SelectItem value='1h'>1 час</SelectItem>
+											<SelectItem value='12h'>12 часов</SelectItem>
+											<SelectItem value='24h'>Сутки</SelectItem>
+											<SelectItem value='72h'>Трое суток</SelectItem>
+											<SelectItem value='168h'>Неделя</SelectItem>
+										</>
+									)}
 								</SelectContent>
 							</Select>
 						</div>
