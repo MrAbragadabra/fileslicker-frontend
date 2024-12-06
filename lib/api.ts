@@ -170,3 +170,120 @@ export const uploadFilesUser = async (
 	})
 	return response.data
 }
+
+// Функции для админа
+
+export const deleteUploadAdmin = async (id: number, token: string) => {
+	const response = await api.post(
+		`/admin/upload/delete/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+
+	return response.data
+}
+
+export const getUsers = async (token: string) => {
+	const response = await api.get(`/admin/users`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
+export const getComplaints = async (token: string) => {
+	const response = await api.get(`/admin/complaints`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
+export const getUploadsAdmin = async (token: string) => {
+	const response = await api.get(`/admin/uploads`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
+export const getUsersAdmin = async (token: string) => {
+	const response = await api.get(`/admin/users`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
+export const userGrantAdmin = async (token: string, id: number) => {
+	const response = await api.post(
+		`/admin/users/grant/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+	return response.data
+}
+
+export const userRevokeAdmin = async (token: string, id: number) => {
+	const response = await api.post(
+		`/admin/users/revoke/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+	return response.data
+}
+
+export const userBlock = async (token: string, id: number) => {
+	const response = await api.post(
+		`/admin/users/block/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+	return response.data
+}
+
+export const userUnblock = async (token: string, id: number) => {
+	const response = await api.post(
+		`/admin/users/unblock/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+	return response.data
+}
+
+export const complaintClose = async (token: string, id: number) => {
+	const response = await api.post(
+		`/admin/complaint/close/${id}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+	return response.data
+}

@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Table } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from '@/hooks/use-toast'
 import { addComplaint, getFiles } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams, useRouter } from 'next/navigation'
@@ -33,7 +33,6 @@ export default function UploadPage() {
 	const router = useRouter() // хук для редиректа
 	const [files, setFiles] = useState<File[]>([])
 	const [loading, setLoading] = useState<boolean>(false)
-	const toast = useToast()
 
 	const form = useForm<ComplaintFormValues>({
 		resolver: zodResolver(complaintSchema),
@@ -74,6 +73,10 @@ export default function UploadPage() {
 	const onSubmit = async (data: ComplaintFormValues) => {
 		try {
 			await addComplaint({ comment: data.comment, upload_id: Number(id) })
+
+			toast({
+				title: 'Жалоба успешно добавлена!',
+			})
 
 			form.reset()
 		} catch (error) {
