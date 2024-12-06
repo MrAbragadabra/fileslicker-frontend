@@ -223,6 +223,15 @@ export const getUsersAdmin = async (token: string) => {
 	return response.data
 }
 
+export const getFilesAdmin = async (token: string) => {
+	const response = await api.get(`/admin/files`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return response.data
+}
+
 export const userGrantAdmin = async (token: string, id: number) => {
 	const response = await api.post(
 		`/admin/users/grant/${id}`,

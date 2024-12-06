@@ -26,6 +26,7 @@ export default function ComplaintsPage() {
 			if (token) {
 				try {
 					const data = await getComplaints(token)
+					console.log(data)
 					setComplaints(data)
 				} catch {
 					toast({ title: 'Не удалось загрузить жалобы.' })
@@ -95,17 +96,17 @@ export default function ComplaintsPage() {
 									{complaint.comment}
 								</TableCell>
 								<TableCell>
-									{complaint.is_closed ? 'Закрыта' : 'Открыта'}
+									{complaint.is_close ? 'Закрыта' : 'Открыта'}
 								</TableCell>
 								<TableCell>
 									<Button
 										variant='destructive'
-										disabled={closing === complaint.id || complaint.is_closed}
+										disabled={closing === complaint.id || complaint.is_close}
 										onClick={() => handleCloseComplaint(complaint.id)}
 									>
 										{closing === complaint.id ? (
 											<LoaderCircle className='animate-spin' />
-										) : complaint.is_closed ? (
+										) : complaint.is_close ? (
 											'Закрыта'
 										) : (
 											'Закрыть'

@@ -102,7 +102,7 @@ export default function UploadPage() {
 						{files.map(file => (
 							<tr key={file.id}>
 								<td>{file.file_name}</td>
-								<td>{(file.file_size / 1024 / 1024).toFixed(2)} MB</td>{' '}
+								<td>{(file.file_size / 1024 / 1024).toFixed(4)} MB</td>{' '}
 								{/* Правильный расчет в MB */}
 								<td>
 									<Button
