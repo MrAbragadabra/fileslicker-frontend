@@ -7,7 +7,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form'
+} from '@/components/ui/form' // Импортируем компоненты для формы
 import {
 	Table,
 	TableBody,
@@ -15,25 +15,25 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/ui/table'
-import { z } from 'zod'
+} from '@/components/ui/table' // Импортируем компоненты для таблицы
+import { z } from 'zod' // Импортируем библиотеку для валидации
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { toast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button' // Импортируем компонент кнопки
+import { Input } from '@/components/ui/input' // Импортируем компонент ввода
+import { toast } from '@/hooks/use-toast' // Импортируем хук для уведомлений
 import {
 	deleteUpload,
 	deleteUser,
 	editUser,
 	getUploads,
 	getUser,
-} from '@/lib/api'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+} from '@/lib/api' // Импортируем функции для работы с API
+import { zodResolver } from '@hookform/resolvers/zod' // Импортируем решение для интеграции Zod с react-hook-form
+import { LoaderCircle } from 'lucide-react' // Импортируем иконку загрузки
+import Link from 'next/link' // Импортируем Link для навигации
+import { useRouter } from 'next/navigation' // Хук для навигации в Next.js
+import { useEffect, useState } from 'react' // Хук для работы с состоянием и эффектами
+import { useForm } from 'react-hook-form' // Хук для работы с формами
 
 interface Upload {
 	id: number
@@ -43,40 +43,45 @@ interface Upload {
 }
 
 export default function Profile() {
-	const router = useRouter()
-	const [loading, setLoading] = useState(false)
-	const [uploads, setUploads] = useState<Upload[]>([])
-	const [userId, setUserId] = useState<number | null>(null)
+	const router = useRouter() // Хук для навигации в Next.js
+	const [loading, setLoading] = useState(false) // Состояние для отслеживания загрузки
+	const [uploads, setUploads] = useState<Upload[]>([]) // Состояние для хранения загрузок
+	const [userId, setUserId] = useState<number | null>(null) // Состояние для хранения ID пользователя
 
+	// Схема валидации формы
 	const formSchema = z.object({
-		email: z.string().email({ message: 'Введите корректную почту' }).trim(),
+		email: z.string().email({ message: 'Введите корректную почту' }).trim(), // Валидация email
 		name: z
 			.string()
-			.min(2, { message: 'Имя должно быть больше 2 символов' })
+			.min(2, { message: 'Имя должно быть больше 2 символов' }) // Валидация имени
 			.max(50, { message: 'Имя должно быть не больше 50 символов' })
 			.trim(),
 	})
 
+	// Хук для работы с формой
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+		resolver: zodResolver(formSchema), // Используем Zod для валидации формы
 		defaultValues: {
 			email: '',
 			name: '',
 		},
 	})
 
+	// Загружаем данные пользователя и его загрузки при монтировании компонента
 	useEffect(() => {
 		const getUserData = async () => {
 			const token = localStorage.getItem('token')
 
 			if (token) {
 				try {
+					// Получаем данные пользователя
 					const userData = await getUser(token)
 
-					form.setValue('email', userData.email || '')
+					form.setValue('email', userData.email || '') // Заполняем форму данными пользователя
 					form.setValue('name', userData.name || '')
-					setUserId(userData.id)
+					setUserId(userData.id) // Устанавливаем ID пользователя
 
+					// Получаем список загрузок пользователя
 					const uploadsData = await getUploads(token, userData.id)
 					setUploads(uploadsData)
 				} catch (error) {
@@ -91,8 +96,9 @@ export default function Profile() {
 		getUserData()
 	}, [form])
 
+	// Обработка отправки формы
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		setLoading(true)
+		setLoading(true) // Включаем состояние загрузки
 
 		const token = localStorage.getItem('token')
 
@@ -100,9 +106,9 @@ export default function Profile() {
 			try {
 				const newUserData = {
 					id: userId,
-					name: values.name,
+					name: values.name, // Обновляем имя пользователя
 				}
-				await editUser(newUserData, token)
+				await editUser(newUserData, token) // Отправляем запрос на изменение данных пользователя
 
 				toast({
 					title: 'Пользователь успешно изменён!',
@@ -112,11 +118,12 @@ export default function Profile() {
 					title: 'Ошибка изменения профиля!',
 				})
 			} finally {
-				setLoading(false)
+				setLoading(false) // Завершаем загрузку
 			}
 		}
 	}
 
+	// Обработка удаления пользователя
 	const deleteUserClick = async () => {
 		const token = localStorage.getItem('token')
 
@@ -141,14 +148,14 @@ export default function Profile() {
 		try {
 			await deleteUser(token) // Выполняем запрос на удаление пользователя
 
-			localStorage.removeItem('token') // Удаляем токен
-			window.dispatchEvent(new Event('storage')) // Обновляем навигационное меню
+			localStorage.removeItem('token') // Удаляем токен из localStorage
+			window.dispatchEvent(new Event('storage')) // Обновляем навигацию
 			toast({
 				title: 'Аккаунт удалён',
 				description: 'Ваш аккаунт успешно удалён.',
 			})
 
-			router.push('/') // Перенаправляем на главную
+			router.push('/') // Перенаправляем на главную страницу
 		} catch (error) {
 			console.error(error)
 			toast({
@@ -156,10 +163,11 @@ export default function Profile() {
 				description: 'Не удалось удалить аккаунт. Попробуйте позже.',
 			})
 		} finally {
-			setLoading(false)
+			setLoading(false) // Завершаем загрузку
 		}
 	}
 
+	// Обработка удаления загрузки
 	const handleDeleteUpload = async (id: number) => {
 		const token = localStorage.getItem('token')
 
@@ -172,16 +180,14 @@ export default function Profile() {
 		}
 
 		try {
-			console.log(token)
-			console.log(id)
-			await deleteUpload(id, token) // Передаем только id и токен
+			await deleteUpload(id, token) // Удаляем загрузку по ID и токену
 
 			toast({
 				title: 'Успех',
 				description: `Загрузка с ID ${id} удалена.`,
 			})
 
-			// Обновляем таблицу после удаления
+			// Обновляем список загрузок
 			const updatedUploads = await getUploads(token, userId!)
 			setUploads(updatedUploads)
 		} catch (error) {
@@ -195,6 +201,7 @@ export default function Profile() {
 
 	return (
 		<>
+			{/* Управление загрузками */}
 			<p className='font-bold text-2xl mb-4'>Управление загрузками</p>
 			<Table>
 				<TableHeader>
@@ -237,10 +244,11 @@ export default function Profile() {
 			</Table>
 
 			<hr className='my-4' />
+			{/* Личная информация пользователя */}
 			<p className='font-bold text-2xl mb-4'>Личная информация</p>
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(onSubmit)}
+					onSubmit={form.handleSubmit(onSubmit)} // Обработчик отправки формы
 					className='space-y-4 w-full'
 				>
 					<FormField
@@ -250,7 +258,8 @@ export default function Profile() {
 							<FormItem>
 								<FormLabel>Почта</FormLabel>
 								<FormControl>
-									<Input {...field} disabled />
+									<Input {...field} disabled />{' '}
+									{/* Поле для почты, доступно только для чтения */}
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -286,7 +295,7 @@ export default function Profile() {
 					</Button>
 
 					<Button
-						onClick={deleteUserClick}
+						onClick={deleteUserClick} // Обработчик удаления аккаунта
 						className='w-full'
 						variant={'destructive'}
 						disabled={loading}

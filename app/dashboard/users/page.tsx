@@ -1,48 +1,49 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button' // Импорт компонента кнопки
 import {
 	Table,
 	TableBody,
 	TableCell,
 	TableHeader,
 	TableRow,
-} from '@/components/ui/table'
-import { toast } from '@/hooks/use-toast'
+} from '@/components/ui/table' // Импорт компонентов для таблицы
+import { toast } from '@/hooks/use-toast' // Импорт хука для уведомлений
 import {
 	getUsersAdmin,
 	userBlock,
 	userGrantAdmin,
 	userRevokeAdmin,
 	userUnblock,
-} from '@/lib/api'
-import { LoaderCircle } from 'lucide-react'
-import { useEffect, useState } from 'react'
+} from '@/lib/api' // Импорт функций для работы с API
+import { LoaderCircle } from 'lucide-react' // Импорт иконки загрузки
+import { useEffect, useState } from 'react' // Импорт хуков для состояния и эффекта
 
 export default function UsersPage() {
+	// Состояние для списка пользователей, загрузки и состояния действия
 	const [users, setUsers] = useState<any[]>([])
 	const [loading, setLoading] = useState<boolean>(true)
 	const [actionLoading, setActionLoading] = useState<number | null>(null)
 
-	// Получение данных пользователей
+	// Загрузка данных пользователей при монтировании компонента
 	useEffect(() => {
 		const fetchUsers = async () => {
-			const token = localStorage.getItem('token')
+			const token = localStorage.getItem('token') // Получаем токен пользователя
 			if (token) {
 				try {
-					const data = await getUsersAdmin(token)
+					const data = await getUsersAdmin(token) // Получаем список пользователей
 					setUsers(data)
 				} catch {
-					toast({ title: 'Не удалось загрузить данные о пользователях.' })
+					toast({ title: 'Не удалось загрузить данные о пользователях.' }) // Ошибка загрузки
 				} finally {
-					setLoading(false)
+					setLoading(false) // Завершаем загрузку данных
 				}
 			}
 		}
 		fetchUsers()
 	}, [])
 
-	// Обновление пользователя после действия
+	// Обновление данных пользователя в списке
 	const updateUser = async (id: number, updatedData: Partial<any>) => {
 		setUsers(prevUsers =>
 			prevUsers.map(user =>
@@ -51,46 +52,46 @@ export default function UsersPage() {
 		)
 	}
 
-	// Обработчик назначения/снятия прав администратора
+	// Обработчик назначения или снятия прав администратора
 	const handleToggleAdmin = async (id: number, isAdmin: boolean) => {
-		setActionLoading(id)
+		setActionLoading(id) // Устанавливаем загрузку для действия пользователя
 		const token = localStorage.getItem('token')
 		if (token) {
 			try {
 				if (isAdmin) {
-					await userRevokeAdmin(token, id)
+					await userRevokeAdmin(token, id) // Снимаем права администратора
 					toast({ title: 'Права администратора сняты.' })
 				} else {
-					await userGrantAdmin(token, id)
+					await userGrantAdmin(token, id) // Назначаем пользователя администратором
 					toast({ title: 'Назначен администратором.' })
 				}
-				await updateUser(id, { is_admin: !isAdmin })
+				await updateUser(id, { is_admin: !isAdmin }) // Обновляем данные пользователя
 			} catch {
 				toast({ title: 'Ошибка при изменении прав администратора.' })
 			} finally {
-				setActionLoading(null)
+				setActionLoading(null) // Завершаем действие
 			}
 		}
 	}
 
-	// Обработчик блокировки/разблокировки пользователя
+	// Обработчик блокировки или разблокировки пользователя
 	const handleToggleBlock = async (id: number, isBlocked: boolean) => {
-		setActionLoading(id)
+		setActionLoading(id) // Устанавливаем загрузку для действия пользователя
 		const token = localStorage.getItem('token')
 		if (token) {
 			try {
 				if (isBlocked) {
-					await userUnblock(token, id)
+					await userUnblock(token, id) // Разблокируем пользователя
 					toast({ title: 'Пользователь разблокирован.' })
 				} else {
-					await userBlock(token, id)
+					await userBlock(token, id) // Блокируем пользователя
 					toast({ title: 'Пользователь заблокирован.' })
 				}
-				await updateUser(id, { is_blocked: !isBlocked })
+				await updateUser(id, { is_blocked: !isBlocked }) // Обновляем данные пользователя
 			} catch {
 				toast({ title: 'Ошибка при изменении статуса блокировки.' })
 			} finally {
-				setActionLoading(null)
+				setActionLoading(null) // Завершаем действие
 			}
 		}
 	}
@@ -99,13 +100,14 @@ export default function UsersPage() {
 		<div>
 			<h2 className='text-2xl font-bold mb-4'>Пользователи</h2>
 
-			{/* Таблица */}
+			{/* Отображение загрузки, если данные еще не получены */}
 			{loading ? (
 				<div className='flex justify-center'>
 					<LoaderCircle className='animate-spin' />
 				</div>
 			) : (
 				<Table className='min-w-full'>
+					{/* Заголовок таблицы */}
 					<TableHeader>
 						<TableRow>
 							<TableCell className='font-semibold'>ID</TableCell>
@@ -116,6 +118,7 @@ export default function UsersPage() {
 							<TableCell className='font-semibold'>Действия</TableCell>
 						</TableRow>
 					</TableHeader>
+					{/* Тело таблицы с пользователями */}
 					<TableBody>
 						{users.map(user => (
 							<TableRow key={user.id}>
@@ -126,12 +129,13 @@ export default function UsersPage() {
 								<TableCell>{user.is_blocked ? 'Да' : 'Нет'}</TableCell>
 								<TableCell>
 									<div className='flex space-x-2'>
-										{/* Кнопка Назначить/Снять Админа */}
+										{/* Кнопка для назначения/снятия прав администратора */}
 										<Button
 											variant='outline'
 											disabled={user.is_blocked || actionLoading === user.id}
 											onClick={() => handleToggleAdmin(user.id, user.is_admin)}
 										>
+											{/* Показываем загрузку или текст кнопки */}
 											{actionLoading === user.id ? (
 												<LoaderCircle className='animate-spin' />
 											) : user.is_admin ? (
@@ -141,7 +145,7 @@ export default function UsersPage() {
 											)}
 										</Button>
 
-										{/* Кнопка Заблокировать/Разблокировать */}
+										{/* Кнопка для блокировки/разблокировки пользователя */}
 										<Button
 											variant='destructive'
 											disabled={actionLoading === user.id}
@@ -149,6 +153,7 @@ export default function UsersPage() {
 												handleToggleBlock(user.id, user.is_blocked)
 											}
 										>
+											{/* Показываем загрузку или текст кнопки */}
 											{actionLoading === user.id ? (
 												<LoaderCircle className='animate-spin' />
 											) : user.is_blocked ? (
